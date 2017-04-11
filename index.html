@@ -1,0 +1,576 @@
+<!--
+    -List your times
+    -Measure time of the steps of CFOP
+    -Hook up with any type of a timer
+    -Online so everyone could use it
+    -WCA inspection
+    -Choose your own colors
+    -Show what the scramble would look like on the cube
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Cubing Step Timer</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
+</head>
+<body>
+    <h1>TOTAL - <span id="totalTime"></span></h1>
+    <h3>CROSS - <span id="crossTime"></span></h3>
+    <h3>F2L - <span id="f2lTime"></span></h3>
+    <h3>OLL - <span id="ollTime"></span></h3>
+    <h3>PLL - <span id="pllTime"></span></h3>
+    <table>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td id="u1" class="cubie"></td>
+            <td id="u2" class="cubie"></td>
+            <td id="u3" class="cubie"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td id="u4" class="cubie"></td>
+            <td id="u5" class="cubie center"></td>
+            <td id="u6" class="cubie"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td id="u7" class="cubie"></td>
+            <td id="u8" class="cubie"></td>
+            <td id="u9" class="cubie"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td id="l1" class="cubie"></td>
+            <td id="l2" class="cubie"></td>
+            <td id="l3" class="cubie"></td>
+            <td id="f1" class="cubie"></td>
+            <td id="f2" class="cubie"></td>
+            <td id="f3" class="cubie"></td>
+            <td id="r1" class="cubie"></td>
+            <td id="r2" class="cubie"></td>
+            <td id="r3" class="cubie"></td>
+            <td id="b1" class="cubie"></td>
+            <td id="b2" class="cubie"></td>
+            <td id="b3" class="cubie"></td>
+        </tr>
+        <tr>
+            <td id="l4" class="cubie"></td>
+            <td id="l5" class="cubie center"></td>
+            <td id="l6" class="cubie"></td>
+            <td id="f4" class="cubie"></td>
+            <td id="f5" class="cubie center"></td>
+            <td id="f6" class="cubie"></td>
+            <td id="r4" class="cubie"></td>
+            <td id="r5" class="cubie center"</td>
+            <td id="r6" class="cubie"></td>
+            <td id="b4" class="cubie"></td>
+            <td id="b5" class="cubie center"></td>
+            <td id="b6" class="cubie"></td>
+        </tr>
+        <tr>
+            <td id="l7" class="cubie"></td>
+            <td id="l8" class="cubie"></td>
+            <td id="l9" class="cubie"></td>
+            <td id="f7" class="cubie"></td>
+            <td id="f8" class="cubie"></td>
+            <td id="f9" class="cubie"></td>
+            <td id="r7" class="cubie"></td>
+            <td id="r8" class="cubie"></td>
+            <td id="r9" class="cubie"></td>
+            <td id="b7" class="cubie"></td>
+            <td id="b8" class="cubie"></td>
+            <td id="b9" class="cubie"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td id="d1" class="cubie"></td>
+            <td id="d2" class="cubie"></td>
+            <td id="d3" class="cubie"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td id="d4" class="cubie"></td>
+            <td id="d5" class="cubie center"></td>
+            <td id="d6" class="cubie"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td id="d7" class="cubie"></td>
+            <td id="d8" class="cubie"></td>
+            <td id="d9" class="cubie"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <button onclick="generateScramble()">Algorithm</button>
+    <p id="alg"></p>
+</body>
+</html>
+
+<style>
+    table tr td {
+        height: 30px;
+        width: 30px;
+    }
+    table tr td.cubie {
+        border: solid black 1px;
+        border-radius: 2px;
+    }
+    table tr td.center {
+        border-radius: 10px;
+    }
+    table tr td.cubie.top {
+        background-color: white;
+    }
+    table tr td.left {
+        background-color: orange;
+    }
+    table tr td.front {
+        background-color: green;
+    }
+    table tr td.right {
+        background-color: red;
+    }
+    table tr td.down {
+        background-color: yellow;
+    }
+    table tr td.back {
+        background-color: blue;
+    }
+</style>
+
+<script>
+    function generateScramble() {
+        var Sides = {
+            "U": { valid: true, axis: 1 },
+            "L": { valid: true, axis: 2 },
+            "F": { valid: true, axis: 3 },
+            "R": { valid: true, axis: 2 },
+            "D": { valid: true, axis: 1 },
+            "B": { valid: true, axis: 3 }
+        };
+        var Modifiers = [
+            "",
+            "'",
+            "2",
+        ];
+        var scramble = "";
+        for (var i = 0; i < 20; i++) {
+            var side;
+            var valid = false;
+            while (!valid) {
+                var keys = Object.keys(Sides);
+                side = keys[Math.floor(Math.random() * keys.length)];
+                valid = Sides[side].valid;
+            }
+            //clear axes
+            for (var x in Sides) {
+                if (Sides[x].axis != Sides[side].axis) {
+                    Sides[x].valid = true;
+                }
+            }
+            //set current side invalid
+            Sides[side].valid = false;
+
+            var mod = Modifiers[Math.floor(Math.random() * Modifiers.length)];
+
+            scramble += side + mod + " ";
+        }
+        scramble = scramble.slice(0, -1);
+        $("#alg").text(scramble);
+        resetCube();
+        scrambleCube(scramble);
+        setCubeData();
+        colorCubies();
+    }
+    $(document).ready(function () {
+        resetCube();
+        setCubeData();
+        colorCubies();
+    });
+    var cube;
+    var OriginalCube = {
+        "u1": "up",
+        "u2": "up",
+        "u3": "up",
+        "u4": "up",
+        "u5": "up",
+        "u6": "up",
+        "u7": "up",
+        "u8": "up",
+        "u9": "up",
+        "l1": "left",
+        "l2": "left",
+        "l3": "left",
+        "l4": "left",
+        "l5": "left",
+        "l6": "left",
+        "l7": "left",
+        "l8": "left",
+        "l9": "left",
+        "f1": "front",
+        "f2": "front",
+        "f3": "front",
+        "f4": "front",
+        "f5": "front",
+        "f6": "front",
+        "f7": "front",
+        "f8": "front",
+        "f9": "front",
+        "r1": "right",
+        "r2": "right",
+        "r3": "right",
+        "r4": "right",
+        "r5": "right",
+        "r6": "right",
+        "r7": "right",
+        "r8": "right",
+        "r9": "right",
+        "b1": "back",
+        "b2": "back",
+        "b3": "back",
+        "b4": "back",
+        "b5": "back",
+        "b6": "back",
+        "b7": "back",
+        "b8": "back",
+        "b9": "back",
+        "d1": "down",
+        "d2": "down",
+        "d3": "down",
+        "d4": "down",
+        "d5": "down",
+        "d6": "down",
+        "d7": "down",
+        "d8": "down",
+        "d9": "down"
+    }
+    var moves = {
+        "U": {
+            "u1": "u3",
+            "u2": "u6",
+            "u3": "u9",
+            "u4": "u2",
+            "u5": "u5",
+            "u6": "u8",
+            "u7": "u1",
+            "u8": "u4",
+            "u9": "u7",
+            "l1": "b1",
+            "l2": "b2",
+            "l3": "b3",
+            "f1": "l1",
+            "f2": "l2",
+            "f3": "l3",
+            "r1": "f1",
+            "r2": "f2",
+            "r3": "f3",
+            "b1": "r1",
+            "b2": "r2",
+            "b3": "r3",
+        },
+        "L": {
+            "u1": "f1",
+            "u4": "f4",
+            "u7": "f7",
+            "l1": "l3",
+            "l2": "l6",
+            "l3": "l9",
+            "l4": "l2",
+            "l5": "l5",
+            "l6": "l8",
+            "l7": "l1",
+            "l8": "l4",
+            "l9": "l7",
+            "f1": "d1",
+            "f4": "d4",
+            "f7": "d7",
+            "b9": "u1",
+            "b6": "u4",
+            "b3": "u7",
+            "d1": "b9",
+            "d4": "b6",
+            "d7": "b3"
+        },
+        "F": {
+            "u7": "r1",
+            "u8": "r4",
+            "u9": "r7",
+            "l9": "u7",
+            "l6": "u8",
+            "l3": "u9",
+            "f1": "f3",
+            "f2": "f6",
+            "f3": "f9",
+            "f4": "f2",
+            "f5": "f5",
+            "f6": "f8",
+            "f7": "f1",
+            "f8": "f4",
+            "f9": "f7",
+            "r1": "d3",
+            "r4": "d2",
+            "r7": "d1",
+            "d1": "l3",
+            "d2": "l6",
+            "d3": "l9"
+        },
+        "R": {
+            "u3": "b7",
+            "u6": "b4",
+            "u9": "b1",
+            "f3": "u3",
+            "f6": "u6",
+            "f9": "u9",
+            "r1": "r3",
+            "r2": "r6",
+            "r3": "r9",
+            "r4": "r2",
+            "r5": "r5",
+            "r6": "r8",
+            "r7": "r1",
+            "r8": "r4",
+            "r9": "r7",
+            "b7": "d3",
+            "b4": "d6",
+            "b1": "d9",
+            "d3": "f3",
+            "d6": "f6",
+            "d9": "f9"
+        },
+        "D": {
+            "l7": "f7",
+            "l8": "f8",
+            "l9": "f9",
+            "f7": "r7",
+            "f8": "r8",
+            "f9": "r9",
+            "r7": "b7",
+            "r8": "b8",
+            "r9": "b9",
+            "b7": "l7",
+            "b8": "l8",
+            "b9": "l9",
+            "d1": "d3",
+            "d2": "d6",
+            "d3": "d9",
+            "d4": "d2",
+            "d5": "d5",
+            "d6": "d8",
+            "d7": "d1",
+            "d8": "d4",
+            "d9": "d7"
+        },
+        "B": {
+            "u1": "l7",
+            "u2": "l4",
+            "u3": "l1",
+            "l1": "d7",
+            "l4": "d8",
+            "l7": "d9",
+            "r3": "u1",
+            "r6": "u2",
+            "r9": "u3",
+            "b1": "b3",
+            "b2": "b6",
+            "b3": "b9",
+            "b4": "b2",
+            "b5": "b5",
+            "b6": "b8",
+            "b7": "b1",
+            "b8": "b4",
+            "b9": "b7",
+            "d7": "r9",
+            "d8": "r6",
+            "d9": "r3"
+        }
+    }
+    function resetCube() {
+        cube = Object.assign({}, OriginalCube);
+    }
+    function setCubeData() {
+        for (var cubie in cube) {
+            if (cube.hasOwnProperty(cubie)) {
+                $("#" + cubie).attr('data-value', cube[cubie]);
+            }
+        }
+    }
+    function scrambleCube(move) {
+        var individualMoves = move.split(" ");
+        for (var i = 0; i < individualMoves.length; i++) {
+            var indie = individualMoves[i];
+            var modifier = "";
+            indie = indie.toUpperCase();
+            if (indie.length > 1) {
+                modifier = indie.substr(1, 1);
+                indie = indie.substr(0, 1);
+            }
+            if (moves.hasOwnProperty(indie)) {
+                makeMove(moves[indie], modifier == "\'");
+                if (modifier == "2") {
+                    makeMove(moves[indie], modifier == "\'");
+                }
+            }
+        }
+    }
+    function makeMove(move, inverse) {
+        var oldCube = Object.assign({}, cube);
+        for (var first in move) {
+            if (move.hasOwnProperty(first)) {
+                if (!inverse) {
+                    cube[move[first]] = oldCube[first];
+                }
+                else {
+                    cube[first] = oldCube[move[first]];
+                }
+            }
+        }
+    }
+    function colorCubies() {
+        $("table tr td.cubie[data-value=up]").removeClass("left front right down back").addClass("up");
+        $("table tr td.cubie[data-value=left]").removeClass("front right down back up").addClass("left");
+        $("table tr td.cubie[data-value=front]").removeClass("right down back up left").addClass("front");
+        $("table tr td.cubie[data-value=right]").removeClass("down back up left front").addClass("right");
+        $("table tr td.cubie[data-value=down]").removeClass("back up left front right").addClass("down");
+        $("table tr td.cubie[data-value=back]").removeClass("up left front right down").addClass("back");
+    }
+    var gameLoop;
+    var stage = 0;
+    var done = true;
+    var startTime;
+    var stageTime;
+    var stageIds = ["crossTime", "f2lTime", "ollTime", "pllTime"];
+    var runningTime = 0;
+    $(document).keydown(function (e) {
+        if (e.keyCode === 32) {
+            spacePressed();
+        }
+        if (e.keyCode === 13) {
+            endTimer();
+            clearTimes();
+        }
+    });
+
+    function spacePressed() {
+        if (stage === 0) {
+            startTimer();
+        }
+        else if (stage === stageIds.length) {
+            endTimer();
+        }
+        else {
+            advanceStage();
+        }
+    }
+
+    function startTimer() {
+        clearTimes();
+        done = false;
+        stage++;
+        var s = new Date();
+        startTime = s.getTime();
+        stageTime = startTime;
+        gameLoop = setInterval(looper, 1);
+    }
+
+    function looper() {
+        if (!done) {
+            var d = new Date();
+            runningTime = d.getTime();
+            displayTime("totalTime", runningTime - startTime);
+            displayTime(stageIds[stage - 1], runningTime - stageTime);
+        }
+        else {
+            clearInterval(gameLoop);
+        }
+    }
+
+    function advanceStage() {
+        stageTime = runningTime;
+        stage++;
+    }
+
+    function endTimer() {
+        done = true;
+        stage = 0;
+    }
+
+    function displayTime(id, time) {
+        var minutes = Math.floor(time / 60000);
+        var seconds = Math.floor((time % 60000) / 1000);
+        var milliseconds = time % 1000;
+        var timeString = "";
+        if (seconds == 60) {
+            minutes += 1;
+            seconds = 0;
+        }
+        if (minutes > 0) {
+            timeString += minutes + ":";
+        }
+        if (seconds < 10 && minutes > 0) {
+            timeString += "0";
+        }
+        timeString += seconds + ".";
+        if (milliseconds < 100) {
+            timeString += "0";
+        }
+        if (milliseconds < 10) {
+            timeString += "0";
+        }
+        timeString += milliseconds;
+
+        $("#" + id).text(timeString);
+    }
+
+    function clearTimes() {
+        $("#totalTime").text("");
+        for (var i = 0; i < stageIds.length; i++) {
+            $("#" + stageIds[i]).text("");
+        }
+    }
+</script>
