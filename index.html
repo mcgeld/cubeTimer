@@ -8,10 +8,14 @@
     -Show what the scramble would look like on the cube
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <title>Cubing Step Timer</title>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
 </head>
 <body>
     <h1>TOTAL - <span id="totalTime"></span></h1>
@@ -147,7 +151,7 @@
             <td></td>
         </tr>
     </table>
-    <button onclick="generateScramble()">Algorithm</button>
+    <button id="algorithmButton" onclick="generateScramble()">Algorithm</button>
     <p id="alg"></p>
 </body>
 </html>
@@ -229,6 +233,7 @@
         colorCubies();
     }
     $(document).ready(function () {
+        $(document).on("touchstart", pageTapped);
         resetCube();
         setCubeData();
         colorCubies();
@@ -495,6 +500,12 @@
             clearTimes();
         }
     });
+
+    function pageTapped(e) {
+        if(!$(e.target).is("button")){
+            spacePressed();
+        }
+    }
 
     function spacePressed() {
         if (stage === 0) {
